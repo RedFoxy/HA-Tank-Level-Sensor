@@ -1,0 +1,201 @@
+substitutions:
+  devicename:    Water tank
+  devicename_id: water-tank
+  board_type:    d1_mini
+  static_ipaddr: 192.168.0.76
+
+  upd_interval:  5s
+
+  min_sensor:    "2048"   # Minimum distance from ultrasonic sensor, note that JSN-SR04T can't read less than 20cm!
+  max_sensor:    "10700"  # Maximum distance inside the tank
+  tank_capacity: "1500"   # Maximum Tank volume in liters
+
+esphome:
+  name: $devicename_id
+  on_boot:
+    priority: -10
+    then:
+      - switch.turn_off: led_10
+      - switch.turn_off: led_20
+      - switch.turn_off: led_30
+      - switch.turn_off: led_40
+      - switch.turn_off: led_50
+      - switch.turn_off: led_70
+      - switch.turn_off: led_90
+
+esp8266:
+  board: $board_type
+
+logger:
+
+api:
+  encryption:
+    key: !secret api_encryption
+
+ota:
+  password: !secret ota_password
+  id: my_ota
+
+wifi:
+  networks:
+  - ssid:      !secret wifi_ssid
+    password:  !secret wifi_password
+  - ssid:      !secret wifi2_ssid
+    password:  !secret wifi2_password
+
+  manual_ip:
+    static_ip: $static_ipaddr
+    gateway:   !secret gateway
+    subnet:    !secret subnet
+    dns1:      !secret dns1
+
+  ap:
+    ssid:      $devicename Hotspot
+    password:  !secret ap_password
+
+captive_portal:
+
+web_server:
+  port: 80
+
+binary_sensor:
+- platform: status
+  name: $devicename Status
+
+time:
+  - platform: sntp
+    timezone: Europe/Rome
+
+text_sensor:
+  - platform: version
+    name: $devicename ESPHome Version
+  - platform: wifi_info
+    ip_address:
+      name: $devicename IP
+    ssid:
+      name: $devicename SSID
+    bssid:
+      name: $devicename BSSID
+
+globals:
+
+  - id: tank_multi
+    type: float
+    restore_value: no
+    initial_value: '10000'
+  - id: tank_diff
+    type: float
+    restore_value: no
+    initial_value: $max_sensor-$min_sensor
+  - id: tank_act_level
+    type: float
+    restore_value: no
+    initial_value: '0'
+
+switch:
+
+  - platform: restart
+    name: "$devicename Restart"
+
+# ------------------------------ Leds to show tank fill in percentage
+  - platform: gpio
+    pin: D2
+    id: led_10
+    name: "$devicename 10%" # Red led
+
+  - platform: gpio
+    pin: D1
+    id: led_20
+    name: "$devicename 20%" # Red led
+
+  - platform: gpio
+    pin: D0
+    id: led_30
+    name: "$devicename 30%" # Red led
+
+  - platform: gpio
+    pin: D5
+    id: led_40
+    name: "$devicename 40%" # Yellow led
+
+  - platform: gpio
+    pin: D6
+    id: led_50
+    name: "$devicename 50%" # Yellow led
+
+  - platform: gpio
+    pin: D7
+    id: led_70
+    name: "$devicename 70%" # Green led
+  
+  - platform: gpio
+    pin: D8
+    id: led_90
+    name: "$devicename 90%" # Green led
+
+sensor:
+# ------------------------------ Uptime sensor
+  - platform: uptime
+    name: $devicename Uptime
+  
+# ------------------------------ WiFi Signal sensor
+  - platform: wifi_signal
+    name: $devicename WiFi Signal
+    update_interval: 60s
+
+# ------------------------------ Ultrasonic sensor - Sensor distance in centimeter
+# TX - Echo    - D3
+# RX - Trigger - D4
+
+  - platform: ultrasonic
+    trigger_pin: D4
+    echo_pin: D3
+    name: "$devicename Sensor distance"
+    unit_of_measurement: "cm"
+    accuracy_decimals: 2
+    update_interval: $upd_interval
+    filters:
+      - lambda: !lambda |-
+          if (x>0) {
+            id(tank_act_level) = x;
+            return x*100;
+          } else {
+            return 0;
+          }
+      - filter_out: nan
+
+# ------------------------------ Tank fill in percentage
+  - platform: template
+    update_interval: $upd_interval
+    name: "$devicename"
+    unit_of_measurement: "%"
+    icon: mdi:water-percent
+    accuracy_decimals: 0
+    lambda: |-
+      if (id(tank_act_level)>0) {
+        int act_level = ((((id(tank_act_level)*id(tank_multi))-$min_sensor)-id(tank_diff))/id(tank_diff))*-100;
+        if (act_level>=10) { id(led_10).turn_on(); } else { id(led_10).turn_off(); }
+        if (act_level>=20) { id(led_20).turn_on(); } else { id(led_20).turn_off(); }
+        if (act_level>=30) { id(led_30).turn_on(); } else { id(led_30).turn_off(); }
+        if (act_level>=40) { id(led_40).turn_on(); } else { id(led_40).turn_off(); }
+        if (act_level>=50) { id(led_50).turn_on(); } else { id(led_50).turn_off(); }
+        if (act_level>=70) { id(led_70).turn_on(); } else { id(led_70).turn_off(); }
+        if (act_level>=90) { id(led_90).turn_on(); } else { id(led_90).turn_off(); }
+        return act_level;
+      } else {
+        return {};
+      }
+
+# ------------------------------ Tank volume fill in liters
+  - platform: template
+    update_interval: $upd_interval
+    name: "$devicename Volume"
+    icon: mdi:arrow-expand-vertical
+    unit_of_measurement: "L"
+    accuracy_decimals: 0
+    lambda: |-
+      if (id(tank_act_level)>0) {
+        return ((((id(tank_act_level)*id(tank_multi))-$min_sensor)-id(tank_diff))/id(tank_diff))*-$tank_capacity;
+      } else {
+        return {};
+      }

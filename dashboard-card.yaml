@@ -1,0 +1,29 @@
+type: custom:bar-card
+entities:
+  - entity: sensor.water_tank
+decimal: '2'
+height: 40px
+positions:
+  icon: 'off'
+  indicator: inside
+  title: inside
+severity:
+  - color: Red
+    from: '0'
+    to: '49'
+  - color: Orange
+    from: '50'
+    to: '69'
+  - color: LightGreen
+    from: '70'
+    to: '100'
+style: |
+  ha-card div.card-content {
+    padding: 0 !important;
+  }
+  ha-card bar-card-name {
+    color: black;
+  }
+  ha-card bar-card-value {
+    color: black;
+  }
