@@ -1,0 +1,9 @@
+entity: sensor.water_tank
+type: gauge
+max: 100
+min: 0
+severity:
+  green: 0
+  yellow: 70
+  red: 50
+needle: true
