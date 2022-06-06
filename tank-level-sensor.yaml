@@ -1,8 +1,8 @@
 substitutions:
   devicename:    Water tank
   devicename_id: water-tank
-  board_type:    d1_mini
-  static_ipaddr: 192.168.0.76
+  board_type:    d1_minid
+  static_ipaddr: 192.168.0.76 # I use static ip address, to use DHCP, remove this row and manual_ip block
 
   upd_interval:  5s
 
@@ -78,26 +78,28 @@ text_sensor:
       name: $devicename BSSID
 
 globals:
-
+# ------------------------------ Multiplier to remove the comma from the sensor data
   - id: tank_multi
     type: float
     restore_value: no
     initial_value: '10000'
+# ------------------------------ Size of the material inside the tank, calculated subrstracting the minimom distante from the maximum distance 
   - id: tank_diff
     type: float
     restore_value: no
     initial_value: $max_sensor-$min_sensor
+# ------------------------------ Actual distance from the sensor
   - id: tank_act_level
     type: float
     restore_value: no
     initial_value: '0'
 
 switch:
-
+# ------------------------------ Restart board switch
   - platform: restart
     name: "$devicename Restart"
 
-# ------------------------------ Leds to show tank fill in percentage
+# ------------------------------ Leds used to show tank fill in percentage
   - platform: gpio
     pin: D2
     id: led_10
