@@ -1,10 +1,10 @@
 
 # Tank Level - EN
-Sensor for the water, pellets or other, level inside a tank, the project is based on an ESP8266 / Wemod D1 Mini and an ultrasonic sensor like HC-SR04 or the waterproof version JSN-SR04T, recommended in humid environments, you can also use other compatible ultrasonic sensors, the project includes 8 LEDs to physically show how full the tank is even without using the web interface or Home Assistant, the ESP8266 is programmed using ESPHome.
+Sensor for the water, pellets or other, level inside a tank, the project is based on an [ESP8266](https://amzn.to/3GRO7WZ)/[NodeMCU](https://amzn.to/3mjIcAp)/[Wemos D1 Mini](https://amzn.to/3xlyNih) and an ultrasonic sensor like [HC-SR04](https://amzn.to/3Q5xvzi) or the waterproof version [JSN-SR04T](https://amzn.to/3NUTN4J), recommended in humid environments, you can also use other compatible ultrasonic sensors, the project includes 8 LEDs to physically show how full the tank is even without using the web interface or Home Assistant, the ESP8266 is programmed using ESPHome.
 
 ## What you need:
-- Wemod D1 Mini or other ESP8266 board
-- Ultrasonic sensor like HC-SR04 or JSN-SR04T
+- [Wemos D1 Mini](https://amzn.to/3xlyNih), [NodeMCU](https://amzn.to/3mjIcAp) or other [ESP8266 board](https://amzn.to/3GRO7WZ)
+- Ultrasonic sensor like [HC-SR04](https://amzn.to/3Q5xvzi) or [JSN-SR04T](https://amzn.to/3NUTN4J)
 - Power state 220v - 5v
 - 3 red leds (optional)
 - 2 yellow leds  (optional)
@@ -33,11 +33,11 @@ Sensor for the water, pellets or other, level inside a tank, the project is base
 **WIP in english**
 
 # Tank Level - IT
-Sensore per il livello dell'acqua, pellet o altro, dentro una cisterna, il progetto è basato su un ESP8266/Wemod D1 Mini e un sensore a ultrasuoni HC-SR04 o la versione impermeabile JSN-SR04T, consigliata in ambienti umidi, potete usare anche altri sensori a ultrasuoni compatibili, nel progetto è prevista la presenza di 8 led per mostrare fisicamente quanto sia piena la cisterna anche senza usare l'interfaccia web o Home Assistant, l'ESP8266 è programmato usando ESPHome.
+Sensore per il livello dell'acqua, pellet o altro, dentro una cisterna, il progetto è basato su un [ESP8266](https://amzn.to/3GRO7WZ)/[NodeMCU](https://amzn.to/3mjIcAp)/[Wemos D1 Mini](https://amzn.to/3xlyNih) e un sensore a ultrasuoni [HC-SR04](https://amzn.to/3Q5xvzi) o la versione impermeabile [JSN-SR04T](https://amzn.to/3NUTN4J), consigliata in ambienti umidi, potete usare anche altri sensori a ultrasuoni compatibili, nel progetto è prevista la presenza di 8 led per mostrare fisicamente quanto sia piena la cisterna anche senza usare l'interfaccia web o Home Assistant, l'ESP8266 è programmato usando ESPHome.
 
 ## Materiali necessari:
-- Wemod D1 Mini o altra board basata su ESP8266
-- Sensore a ultrasuoni come HC-SR04 o JSN-SR04T
+- [Wemos D1 Mini](https://amzn.to/3xlyNih), [NodeMCU](https://amzn.to/3mjIcAp) o altra board basata su [ESP8266](https://amzn.to/3GRO7WZ)
+- Sensore a ultrasuoni come [HC-SR04](https://amzn.to/3Q5xvzi) o [JSN-SR04T](https://amzn.to/3NUTN4J)
 - Modulo di alimentazione 220v - 5v
 - 3 led rossi (opzionali)
 - 2 led gialli (opzionali)
