@@ -1,9 +1,9 @@
-entity: sensor.water_tank
+entity: sensor.serbatoio_acqua
 type: gauge
 max: 100
 min: 0
 severity:
   green: 0
-  yellow: 70
-  red: 50
+  yellow: 50
+  red: 70
 needle: true
