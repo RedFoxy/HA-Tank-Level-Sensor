@@ -1,0 +1,150 @@
+substitutions:
+  devicename:    Water tank
+  devicename_id: water-tank
+  board_type:    d1_minid
+  static_ipaddr: 192.168.0.76 # I use static ip address, to use DHCP, remove this row and manual_ip block
+
+  upd_interval:  5s
+
+  min_sensor:    "2048"   # Minimum distance from ultrasonic sensor, note that JSN-SR04T can't read less than 20cm!
+  max_sensor:    "10700"  # Maximum distance inside the tank
+  tank_capacity: "1500"   # Maximum Tank volume in liters
+
+esphome:
+  name: $devicename_id
+
+esp8266:
+  board: $board_type
+
+logger:
+
+api:
+  encryption:
+    key: !secret api_encryption
+
+ota:
+  password: !secret ota_password
+  id: my_ota
+
+wifi:
+  networks:
+  - ssid:      !secret wifi_ssid
+    password:  !secret wifi_password
+  - ssid:      !secret wifi2_ssid
+    password:  !secret wifi2_password
+
+  manual_ip:
+    static_ip: $static_ipaddr
+    gateway:   !secret gateway
+    subnet:    !secret subnet
+    dns1:      !secret dns1
+
+  ap:
+    ssid:      $devicename Hotspot
+    password:  !secret ap_password
+
+captive_portal:
+
+web_server:
+  port: 80
+
+binary_sensor:
+- platform: status
+  name: $devicename Status
+
+time:
+  - platform: sntp
+    timezone: !secret time_zone
+    servers:  !secret ntp_servers
+
+text_sensor:
+  - platform: version
+    name: $devicename ESPHome Version
+  - platform: wifi_info
+    ip_address:
+      name: $devicename IP
+    ssid:
+      name: $devicename SSID
+    bssid:
+      name: $devicename BSSID
+
+globals:
+# ------------------------------ Multiplier to remove the comma from the sensor data
+  - id: tank_multi
+    type: float
+    restore_value: no
+    initial_value: '10000'
+# ------------------------------ Size of the material inside the tank, calculated subrstracting the minimom distante from the maximum distance 
+  - id: tank_diff
+    type: float
+    restore_value: no
+    initial_value: $max_sensor-$min_sensor
+# ------------------------------ Actual distance from the sensor
+  - id: tank_act_level
+    type: float
+    restore_value: no
+    initial_value: '0'
+
+switch:
+# ------------------------------ Restart board switch
+  - platform: restart
+    name: "$devicename Restart"
+
+sensor:
+# ------------------------------ UpTime sensor
+  - platform: uptime
+    name: $devicename Uptime
+  
+# ------------------------------ WiFi Signal sensor
+  - platform: wifi_signal
+    name: $devicename WiFi Signal
+    update_interval: 60s
+
+# ------------------------------ Ultrasonic sensor - Sensor distance in centimeter
+# TX - Echo    - D3
+# RX - Trigger - D4
+
+  - platform: ultrasonic
+    trigger_pin: D4
+    echo_pin: D3
+    name: "$devicename Sensor distance"
+    unit_of_measurement: "cm"
+    accuracy_decimals: 2
+    update_interval: $upd_interval
+    filters:
+      - lambda: !lambda |-
+          if (x>0) {
+            id(tank_act_level) = x;
+            return x*100;
+          } else {
+            return 0;
+          }
+      - filter_out: nan
+
+# ------------------------------ Tank fill in percentage
+  - platform: template
+    update_interval: $upd_interval
+    name: "$devicename"
+    unit_of_measurement: "%"
+    icon: mdi:water-percent
+    accuracy_decimals: 0
+    lambda: |-
+      if (id(tank_act_level)>0) {
+        return ((((id(tank_act_level)*id(tank_multi))-$min_sensor)-id(tank_diff))/id(tank_diff))*-100;
+      } else {
+        return {};
+      }
+
+# ------------------------------ Tank volume fill in liters
+  - platform: template
+    update_interval: $upd_interval
+    name: "$devicename Volume"
+    icon: mdi:arrow-expand-vertical
+    unit_of_measurement: "L"
+    accuracy_decimals: 0
+    lambda: |-
+      if (id(tank_act_level)>0) {
+        return ((((id(tank_act_level)*id(tank_multi))-$min_sensor)-id(tank_diff))/id(tank_diff))*-$tank_capacity;
+      } else {
+        return {};
+      }

@@ -19,7 +19,8 @@ Sensor for the water, pellets or other, level inside a tank, the project is base
 
 ## Board programming
 **WIP in english**
-[tank-level-sensor.yaml](/tank-level-sensor.yaml)
+With led [tank-level-sensor.yaml](/tank-level-sensor.yaml)
+Witout led [tank-level-sensor-NO-led.yaml](/tank-level-sensor-NO-led.yaml)
 
 ## Show Tank status
 ![Home Assistant - Water Tank example](/doc/image/ha-example.jpg)
@@ -56,7 +57,7 @@ Nota bene: Prima di procedere, effettuate tutti i collegamenti mostrati nello sc
 Collegate il Wemos D1 Mini, o altra board basata su ESP8266, al computer, verificate che venga configurato correttamente come porta seriale, in caso installate i driver della vostra versione.
 Aprite l'interfaccia di ESPHome, se non avete ancora installato ESPHome, potete installarlo come plugin di Home Assistant o in modo indipendente, come specificato sul sito https://esphome.io/ alle voci **Get Started**.
 Create un nuovo progetto in ESPHome, seguite la guida per collegarvi alla vostra board.
-Editate il codice del progetto appena creato, sostituendolo con quello presente nel file [tank-level-sensor.yaml](/tank-level-sensor.yaml).
+Editate il codice del progetto appena creato, sostituendolo con quello presente nel file [tank-level-sensor.yaml](/tank-level-sensor.yaml), mentre [tank-level-sensor-NO-led.yaml](/tank-level-sensor-NO-led.yaml) se preferite usare la versione senza i led.
 Personalizzate il codice inserendo i dati della vostra cisterna e della vostra connessione.
 **--ATTENZIONE!--**
 - Le configurazioni riportanti la dicitura **!secret** vengono lette dal file secret di ESPHome, in caso potete personalizzarle a mano o inserire nel file secret con gli stessi nomi di variabile.
