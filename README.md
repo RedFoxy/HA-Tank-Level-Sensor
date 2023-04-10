@@ -1,6 +1,7 @@
-
 # Tank Level - EN
 Sensor for the water, pellets or other, level inside a tank, the project is based on an [ESP8266](https://amzn.to/3GRO7WZ)/[NodeMCU](https://amzn.to/3mjIcAp)/[Wemos D1 Mini](https://amzn.to/3xlyNih) and an ultrasonic sensor like [HC-SR04](https://amzn.to/3Q5xvzi) or the waterproof version [JSN-SR04T](https://amzn.to/3NUTN4J), recommended in humid environments, you can also use other compatible ultrasonic sensors, the project includes 8 LEDs to physically show how full the tank is even without using the web interface or Home Assistant, the ESP8266 is programmed using ESPHome.
+
+<a href="https://www.buymeacoffee.com/redfoxydarrest" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
 ## What you need:
 - [Wemos D1 Mini](https://amzn.to/3xlyNih), [NodeMCU](https://amzn.to/3mjIcAp) or other [ESP8266 board](https://amzn.to/3GRO7WZ)
@@ -35,6 +36,8 @@ Witout led [tank-level-sensor-NO-led.yaml](/tank-level-sensor-NO-led.yaml)
 
 # Tank Level - IT
 Sensore per il livello dell'acqua, pellet o altro, dentro una cisterna, il progetto è basato su un [ESP8266](https://amzn.to/3GRO7WZ)/[NodeMCU](https://amzn.to/3mjIcAp)/[Wemos D1 Mini](https://amzn.to/3xlyNih) e un sensore a ultrasuoni [HC-SR04](https://amzn.to/3Q5xvzi) o la versione impermeabile [JSN-SR04T](https://amzn.to/3NUTN4J), consigliata in ambienti umidi, potete usare anche altri sensori a ultrasuoni compatibili, nel progetto è prevista la presenza di 8 led per mostrare fisicamente quanto sia piena la cisterna anche senza usare l'interfaccia web o Home Assistant, l'ESP8266 è programmato usando ESPHome.
+
+<a href="https://www.buymeacoffee.com/redfoxydarrest" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
 ## Materiali necessari:
 - [Wemos D1 Mini](https://amzn.to/3xlyNih), [NodeMCU](https://amzn.to/3mjIcAp) o altra board basata su [ESP8266](https://amzn.to/3GRO7WZ)
